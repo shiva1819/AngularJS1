@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-resource.js"></script>
+</head>
+<body>
+
+	<div ng-controller="myctrl">
+		<div ng-click="demo()">test</div>
+		<div>{{data}}</div>
+	</div>
+	<script type="text/javascript">
+	var app = angular.module('myApp',['ngResource'])
+
+
+
+	app.factory('myser',['$q', '$timeout',function($q,$timeout,$http){
+
+		return {
+			user: getUsers
+		}
+
+		function getUsers(){
+			var arr = [
+						{name:"Shiva", id:10},
+						{name:"Prasad", id:20}
+					]
+
+			var defferedObject = $q.defer();
+
+			$timeout(function(){
+				defferedObject.notify('notifications....');
+				defferedObject.resolve(arr);
+			}, 1000);
+
+			return defferedObject.promise;
+		}
+
+
+	}]);
+	
+	app.controller('myctrl', function($scope,$http,$resource, myser){
+			
+			/*$scope.demo = function(){
+			
+			$http({
+				method:'GET',
+				url:"https://jsonplaceholder.typicode.com/users"
+			}).then(function(res){
+				console.log(res.data);
+				$scope.data = res.data;
+			}, function(err){
+				console.log(err);
+			});
+
+			}*/
+
+
+			//
+			/*$resource('https://jsonplaceholder.typicode.com/users').get().$promise.then(function(data){
+				console.log(data)
+			}, function(res){
+				console.log(res);
+			});*/
+
+
+			// $q
+
+
+			myser.user().then(successCallBack,errorCallBack, notificationCallBack)
+
+
+			function successCallBack(data) {
+			    $scope.users = data;
+			    console.log($scope.users);
+			}
+
+		  function errorCallBack() {
+		    alert("error");
+		  }
+
+			  function notificationCallBack(notification) {
+			    alert("Notification Message: " + notification);
+			  }
+
+		});
+	angular.bootstrap(document,['myApp']);
+	</script>
+</body>
+</html>

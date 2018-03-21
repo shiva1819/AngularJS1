@@ -1,0 +1,79 @@
+<!doctype HTML>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    </head>
+    <body>
+
+        <div ng-controller="ctrl">
+            <div dir></div>
+            <!-- <input type="text" ng-model="data.name"> -->
+        </div>
+
+        <div ng-controller="ctrl1">
+                <!-- <ul>
+                    <li ng-repeat="d in data.name">
+                        <input type="text" ng-model="d.name">{{ d.name }}
+                    </li>
+                </ul> -->
+            </div>
+
+        <script>
+            var app = angular.module('myApp', []);
+            
+            // app.service('myser', function(){
+            //     this.test = {
+            //         name: demo
+            //     }
+
+            //     this.name = '';
+
+            //     function demo(pass){
+            //         return pass;
+            //     }
+            // });
+            
+    app.service('fact', function(){
+        // var obj = {};
+            this.name = [{name:"shiva"}, {name:"prasad"}];
+
+        // return obj;
+    });
+
+
+
+    app.provider('prov', function(){
+
+        this.$get = function(){
+            var obj = {}
+
+            obj.name = "Shiva"
+
+            return obj;
+        };
+    });
+
+    app.directive('dir', function(){
+        return {
+            template:"<h1> {{ data.name }}</h1>"
+        }
+    })
+
+
+    app.config(['provProvider', function(provProvider){
+
+    }]);
+
+            app.controller('ctrl', function($scope, fact, prov){
+                $scope.data = prov;
+            })
+
+            app.controller('ctrl1', function($scope, fact){
+                $scope.data = fact;
+            })            
+            
+
+            angular.bootstrap(document, ['myApp'])
+        </script>
+    </body> 
+</html>
